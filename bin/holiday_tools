@@ -1,3 +1,108 @@
 #!/usr/bin/env ruby
+# encoding: utf-8
 
-require 'holiday_tools'
+# CLI for the HolidayTools::Locator
+# list the countries/subregions which have a holiday
+
+# kittekat /may/jun 2013
+
+require "date"
+require "optparse"
+require "optparse/date"
+require "ostruct"
+
+require "holiday_tools"
+
+# dummy entry will keep the ruby interpeter happy
+# as the "real" @opts is generated in an begin/rescue/end block
+@opts={}
+
+# collect the commandline options
+def get_opts
+  options = OpenStruct.new
+  
+  #set the defaults
+  options.mode = :d
+  options.date = Date.today
+  options.debug = false
+  #options.list = false
+  
+  # prepare the parser
+  opts = OptionParser.new
+  opts.banner = "Usage: #{__FILE__} [options] [region [region] ...]"
+  
+  opts.on( '-m', '--mode MODE', [:d, :w, :m, :y], 
+                 "d(ay), w(eek), m(onth), y(ear) [Default: d]") do |m|
+    options.mode = m
+  end
+  
+  opts.on( '-d', '--date YYYY-MM-DD', Date, 
+                 "Year-Month-Day [Default: today]") do |d|
+    options.date = d
+  end
+  
+  opts.on( '-v', '--verbose', "Flag for debug output [Default: false]") do |v|
+    options.debug = v
+  end
+  
+  opts.on( '-l', '--list', 'List available regions') do |l|
+    options.list = l
+  end
+  
+  opts.on_tail( '-h', '--help', "Show this message") do
+    puts opts
+    exit
+  end
+  
+  opts.parse!(ARGV)  # start the parser
+  
+  # collect additional parameters as filter 
+  options.filter = ARGV
+
+  options           # return the struct
+end
+
+
+# start with the commandline options
+# recover from bad user input for options
+begin
+  @opts = get_opts
+  if @opts.debug
+    puts "mode: %s" %  [@opts.mode]
+    puts "date: %s" %  [@opts.date]
+    puts "filter: %s" % [@opts.filter]
+    puts "list: %s" % [@opts.list]
+  end
+rescue OptionParser::InvalidArgument
+  puts "Invalid date argument"
+  puts "Use --help for a format hint"
+  exit
+rescue OptionParser::MissingArgument
+  puts "Missing argument"
+  puts "Use --help for hints"
+  exit
+rescue OptionParser::InvalidOption
+  puts "Invalid option"
+  puts "Use --help for a list"
+  exit
+end
+
+holidays = HolidayTools::Locator.new(@opts.filter)
+if @opts.list
+  puts holidays.show_regions
+  exit
+end
+
+# distribute depending on mode
+date = @opts.date
+case @opts.mode
+when :d
+  puts holidays.show_holiday(date)
+when :w
+  puts holidays.show_week(date)
+when :m
+  puts holidays.show_month(date)
+when :y
+  puts holidays.show_year(date)
+end
+
