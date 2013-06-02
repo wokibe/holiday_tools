@@ -16,5 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = HolidayTools::VERSION
   
   gem.add_dependency 'holidays'
-  gem.add_development_dependency 'rspec', '~> 2.7'
+  gem.add_development_dependency 'rspec', '~> 2.13'
 end
