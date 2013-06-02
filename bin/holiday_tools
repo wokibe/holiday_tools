@@ -41,7 +41,11 @@ def get_opts
     options.date = d
   end
   
-  opts.on( '-v', '--verbose', "Flag for debug output [Default: false]") do |v|
+  opts.on( '-v', '--version', "Flag for version output [Default: false]") do |v|
+    options.version = v
+  end
+  
+  opts.on( '-t', '--test', "Flag for test output [Default: false]") do |v|
     options.debug = v
   end
   
@@ -90,6 +94,10 @@ end
 holidays = HolidayTools::Locator.new(@opts.filter)
 if @opts.list
   puts holidays.show_regions
+  exit
+end
+if @opts.version
+  puts HolidayTools::VERSION
   exit
 end
 
