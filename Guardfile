@@ -13,3 +13,4 @@ guard :rspec do
   watch('spec/spec_helper.rb')  { "spec" }
 end
 
+notification :growl_notify
