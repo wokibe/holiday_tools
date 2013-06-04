@@ -38,7 +38,7 @@ module HolidayTools
     # require "holidays/vz"
     require "holidays/za"
 
-    def initialize( filter )
+    def initialize( filter=[] )
       @filter = filter
     
       # names of the regions/subregions used in the holidays gem

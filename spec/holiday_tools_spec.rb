@@ -14,8 +14,7 @@ describe HolidayTools do
   
   it 'should deliver the whole year for all regions' do
     date = Date.new(2013, 01, 01)
-    filter = []
-    holidays = HolidayTools::Locator.new(filter)
+    holidays = HolidayTools::Locator.new
     answer = holidays.show_year(date)
     #puts answer[0]
     answer.flatten!.size.should == 909
