@@ -19,4 +19,12 @@ describe HolidayTools do
     #puts answer[0]
     answer.flatten!.size.should == 909
   end
+  
+  it 'should list all available regions' do
+    holidays = HolidayTools::Locator.new
+    regions = holidays.show_regions
+    # p regions
+    regions.size.should == 101
+    
+  end
 end

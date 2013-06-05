@@ -1,5 +1,12 @@
 # encoding: utf-8
 
+# monkey path to see available regions
+module Holidays
+  def self.regions
+    @@regions
+  end
+end
+
 module HolidayTools
   class Locator
 
@@ -37,7 +44,7 @@ module HolidayTools
     require "holidays/us"
     # require "holidays/vz"
     require "holidays/za"
-
+    
     def initialize( filter=[] )
       @filter = filter
     
@@ -59,15 +66,15 @@ module HolidayTools
         ca_ab:  'Canada/Alberta',
         ca_bc:  'Canada/British Columbia',
         ca_mb:  'Canada/Manitoba',
-        ca_nb:  'Canada/New Brunswick',
+      # ca_nb:  'Canada/New Brunswick',
         ca_nf:  'Canada/Newfoundland',
         ca_ns:  'Canada/Nova Scotia',
         ca_nt:  'Canada/Northwest Territories',
         ca_nu:  'Canada/Nunavut',
         ca_on:  'Canada/Ontario',
-        ca_pe:  'Canada/Prince Edward Island',
-        ca_sk:  'Canada/Saskatchewan',
+      # ca_pe:  'Canada/Prince Edward Island',
         ca_qc:  'Canada/Quebeck',
+        ca_sk:  'Canada/Saskatchewan',
         ca_yk:  'Canada/Yukon',
         cz:     'Czech Republic',
         de:     'Germany',
@@ -111,15 +118,15 @@ module HolidayTools
         fi:     'Finland',
         fr:     'France',
         gb:     'Great Britain',
-        gb_eng: 'Great Britain/England',
-        gb_wls: 'Great Britain/Wales',
+        gb_con: 'Great Britain/Cornwall',
         gb_eaw: 'Great Britain/England and Wales',
+        gb_eng: 'Great Britain/England',
+        gb_gsy: 'Great Britain/Guernsey',
+        gb_iom: 'Great Britain/Isle of Man',
+        gb_jsy: 'Great Britain/Jersey',
         gb_nir: 'Great Britain/Norther Ireland',
         gb_sct: 'Great Britain/Scotland',
-        gb_jsy: 'Great Britain/Jersey',
-        gb_gsy: 'Great Britain/Guernsey',
-        gb_con: 'Great Britain/Cornwall',
-        gb_iom: 'Great Britain/Isle of Man',
+        gb_wls: 'Great Britain/Wales',
         gg:     'Guernsey',
         ie:     'ireland',
         im:     'Isle of Man',
@@ -155,14 +162,18 @@ module HolidayTools
   
     # loop over region names
     def show_regions
+      regs = Holidays.regions.sort
       txt = []
       txt << "Region \tName"
-      @reg_names.each do |key, val|
-        txt << "%s \t%s" % [key, val]
+      regs.each do |key|
+        name = @reg_names[key]
+        if name
+          txt << "%s \t%s" % [key, name]
+        end
       end
       txt
     end
-
+    
     # get the name of a holiday and the regions, where it is observed
     def show_holiday(date)
       ans = Holidays.on(date, :any, :observed)
