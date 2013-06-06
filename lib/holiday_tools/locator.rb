@@ -1,12 +1,5 @@
 # encoding: utf-8
 
-# monkey path to see available regions
-module Holidays
-  def self.regions
-    @@regions
-  end
-end
-
 module HolidayTools
   class Locator
 
@@ -45,135 +38,143 @@ module HolidayTools
     # require "holidays/vz"
     require "holidays/za"
     
-    def initialize( filter=[] )
-      @filter = filter
+    # names of the regions/subregions used in the holidays gem
+    @@reg_names = {
+      at:     'Austria',
+      au:     'Australia',
+      au_act:  'Australia/Australian Capital Terretory',
+      au_nsw:  'Australia/New South Wales',
+      au_nt:  'Australia/Nothern Terretory',
+      au_qld: 'Australia/Queensland',
+      au_qld_brisbane: 'Australia/Queensland and Brisbane',
+      au_sa:  'Australia/South Australia',
+      au_tas: 'Australia/Tasmania',
+      au_vic: 'Australia/Victoria',
+      au_wa:  'Australia/Western Australia',
+      br:     'Brasilia',
+      ca:     'Canada',
+      ca_ab:  'Canada/Alberta',
+      ca_bc:  'Canada/British Columbia',
+      ca_mb:  'Canada/Manitoba',
+    # ca_nb:  'Canada/New Brunswick',
+      ca_nf:  'Canada/Newfoundland',
+      ca_ns:  'Canada/Nova Scotia',
+      ca_nt:  'Canada/Northwest Territories',
+      ca_nu:  'Canada/Nunavut',
+      ca_on:  'Canada/Ontario',
+    # ca_pe:  'Canada/Prince Edward Island',
+      ca_qc:  'Canada/Quebeck',
+      ca_sk:  'Canada/Saskatchewan',
+      ca_yk:  'Canada/Yukon',
+      cz:     'Czech Republic',
+      de:     'Germany',
+      de_bb:  'Germany/Brandenburg',
+    # de_be:  'Germany/Berlin',
+      de_bw:  'Germany/Baden-Württemberg',
+      de_by:  'Germany/Bayern',
+    # de_hb:  'Germany/Freie Hansestadt Bremen',
+      de_he:  'Germany/Hessen',
+    # de_hh:  'Germany/Hamburg',
+      de_mv:  'Germany/Mecklenburg-Vorpommern',
+    # de_ni:  'Germany/Niedersachsen',
+      de_nw:  'Germany/Nordrhein-Westfalen',
+      de_rp:  'Germany/Rheinland-Pfalz',
+    # de_sh:  'Germany/Schleswig-Holstein',
+      de_sl:  'Germany/Saarland',
+      de_sn:  'Germany/Sachsen',
+      de_st:  'Germany/Sachsen-Anhalt',
+      de_th:  'Germany/Thüringen',
+      dk:     'Denmark',
+      el:     'Greece',
+      es:     'Spain',
+      es_an:  'Spain/Andalusia',
+      es_ar:  'Spain/Aragon',
+      es_ce:  'Spain/Ceuta',
+      es_cl:  'Spain/Castile and Leon',
+      es_cm:  'Spain/Castile-La Mancha',
+      es_cn:  'Spain/Canary Island',
+      es_ct:  'Spain/Catalonia',
+      es_ex:  'Spain/Extremadura',
+      es_ga:  'Spain/Galicia',
+      es_ib:  'Spain/Islas Baleares',
+      es_lo:  'Spain/La Rioja',
+      es_m:   'Spain/Madrid',
+      es_mu:  'Spain/Murcia',
+      es_na:  'Spain/Navarre',
+      es_o:   'Spain/Asturias',
+      es_pv:  'Spain/Euskadi (Pais Vasco - Basque Country)',
+      es_v:   'Spain/Valencia',
+      es_vc:  'Spain/Valencia',
+      fi:     'Finland',
+      fr:     'France',
+      gb:     'Great Britain',
+      gb_con: 'Great Britain/Cornwall',
+      gb_eaw: 'Great Britain/England and Wales',
+      gb_eng: 'Great Britain/England',
+      gb_gsy: 'Great Britain/Guernsey',
+      gb_iom: 'Great Britain/Isle of Man',
+      gb_jsy: 'Great Britain/Jersey',
+      gb_nir: 'Great Britain/Norther Ireland',
+      gb_sct: 'Great Britain/Scotland',
+      gb_wls: 'Great Britain/Wales',
+      # gg:     'Guernsey',
+      ie:     'ireland',
+      im:     'Isle of Man',
+      it:     'Italy',
+      is:     'Iceland',
+      je:     'Jersey',
+      jp:     'Japan',
+      li:     'Liechtenstein',
+      mx:     'Mexico',
+      mx_pue: 'Mexico/Puebla',
+      nz:     'New Zealand',
+      nz_ak:  'New Zealand/Auckland',
+      nz_ca:  'New Zealand/Canterbury',
+      nz_ch:  'New Zealand/Chatham',
+      nz_hb:  "New Zealand/Hawke's Bay",
+      nz_mb:  'New Zealand/Marlboro',
+      nz_nl:  'New Zealand/Northland',
+      nz_ot:  'New Zealand/Otago',
+      nz_sc:  'New Zealand/South Canterbury',
+      nz_sl:  'New Zealand/Southland',
+      nz_we:  'New Zealand/Wellington',
+      nz_wl:  'New Zealand/Westland',
+      nl:     'Netherlands',
+      no:     'Norway',
+      pl:     'Poland',
+      pt:     'Portugal',
+      se:     'Sweden',
+      us:     'United States of America',
+      us_dc:  'United States of America/Washington DC',
+      za:     'South Africa'
+      }
     
-      # names of the regions/subregions used in the holidays gem
-      @reg_names = {
-        at:     'Austria',
-        au:     'Australia',
-        au_act:  'Australia/Australian Capital Terretory',
-        au_nsw:  'Australia/New South Wales',
-        au_nt:  'Australia/Nothern Terretory',
-        au_qld: 'Australia/Queensland',
-        au_qld_brisbane: 'Australia/Queensland and Brisbane',
-        au_sa:  'Australia/South Australia',
-        au_tas: 'Australia/Tasmania',
-        au_vic: 'Australia/Victoria',
-        au_wa:  'Australia/Western Australia',
-        br:     'Brasilia',
-        ca:     'Canada',
-        ca_ab:  'Canada/Alberta',
-        ca_bc:  'Canada/British Columbia',
-        ca_mb:  'Canada/Manitoba',
-      # ca_nb:  'Canada/New Brunswick',
-        ca_nf:  'Canada/Newfoundland',
-        ca_ns:  'Canada/Nova Scotia',
-        ca_nt:  'Canada/Northwest Territories',
-        ca_nu:  'Canada/Nunavut',
-        ca_on:  'Canada/Ontario',
-      # ca_pe:  'Canada/Prince Edward Island',
-        ca_qc:  'Canada/Quebeck',
-        ca_sk:  'Canada/Saskatchewan',
-        ca_yk:  'Canada/Yukon',
-        cz:     'Czech Republic',
-        de:     'Germany',
-        de_bb:  'Germany/Brandenburg',
-      # de_be:  'Germany/Berlin',
-        de_bw:  'Germany/Baden-Württemberg',
-        de_by:  'Germany/Bayern',
-      # de_hb:  'Germany/Freie Hansestadt Bremen',
-        de_he:  'Germany/Hessen',
-      # de_hh:  'Germany/Hamburg',
-        de_mv:  'Germany/Mecklenburg-Vorpommern',
-      # de_ni:  'Germany/Niedersachsen',
-        de_nw:  'Germany/Nordrhein-Westfalen',
-        de_rp:  'Germany/Rheinland-Pfalz',
-      # de_sh:  'Germany/Schleswig-Holstein',
-        de_sl:  'Germany/Saarland',
-        de_sn:  'Germany/Sachsen',
-        de_st:  'Germany/Sachsen-Anhalt',
-        de_th:  'Germany/Thüringen',
-        dk:     'Denmark',
-        el:     'Greece',
-        es:     'Spain',
-        es_an:  'Spain/Andalusia',
-        es_ar:  'Spain/Aragon',
-        es_ce:  'Spain/Ceuta',
-        es_cl:  'Spain/Castile and Leon',
-        es_cm:  'Spain/Castile-La Mancha',
-        es_cn:  'Spain/Canary Island',
-        es_ct:  'Spain/Catalonia',
-        es_ex:  'Spain/Extremadura',
-        es_ga:  'Spain/Galicia',
-        es_ib:  'Spain/Islas Baleares',
-        es_lo:  'Spain/La Rioja',
-        es_m:   'Spain/Madrid',
-        es_mu:  'Spain/Murcia',
-        es_na:  'Spain/Navarre',
-        es_o:   'Spain/Asturias',
-        es_pv:  'Spain/Euskadi (Pais Vasco - Basque Country)',
-        es_v:   'Spain/Valencia',
-        es_vc:  'Spain/Valencia',
-        fi:     'Finland',
-        fr:     'France',
-        gb:     'Great Britain',
-        gb_con: 'Great Britain/Cornwall',
-        gb_eaw: 'Great Britain/England and Wales',
-        gb_eng: 'Great Britain/England',
-        gb_gsy: 'Great Britain/Guernsey',
-        gb_iom: 'Great Britain/Isle of Man',
-        gb_jsy: 'Great Britain/Jersey',
-        gb_nir: 'Great Britain/Norther Ireland',
-        gb_sct: 'Great Britain/Scotland',
-        gb_wls: 'Great Britain/Wales',
-        gg:     'Guernsey',
-        ie:     'ireland',
-        im:     'Isle of Man',
-        it:     'Italy',
-        is:     'Iceland',
-        je:     'Jersey',
-        jp:     'Japan',
-        li:     'Liechtenstein',
-        mx:     'Mexico',
-        mx_pue: 'Mexico/Puebla',
-        nz:     'New Zealand',
-        nz_ak:  'New Zealand/Auckland',
-        nz_ca:  'New Zealand/Canterbury',
-        nz_ch:  'New Zealand/Chatham',
-        nz_hb:  "New Zealand/Hawke's Bay",
-        nz_mb:  'New Zealand/Marlboro',
-        nz_nl:  'New Zealand/Northland',
-        nz_ot:  'New Zealand/Otago',
-        nz_sc:  'New Zealand/South Canterbury',
-        nz_sl:  'New Zealand/Southland',
-        nz_we:  'New Zealand/Wellington',
-        nz_wl:  'New Zealand/Westland',
-        nl:     'Netherlands',
-        no:     'Norway',
-        pl:     'Poland',
-        pt:     'Portugal',
-        se:     'Sweden',
-        us:     'United States of America',
-        us_dc:  'United States of America/Washington DC',
-        za:     'South Africa'
-        }
-    end
-  
+    # class methods
+    ###############
+    
     # loop over region names
-    def show_regions
+    def self.show_regions
       regs = Holidays.regions.sort
       txt = []
       txt << "Region \tName"
       regs.each do |key|
-        name = @reg_names[key]
+        name = @@reg_names[key]
         if name
           txt << "%s \t%s" % [key, name]
+        else
+          txt << "%s: unexpected region id" % [key]
         end
       end
       txt
     end
     
+    # instance methods
+    ##################
+    
+    def initialize( filter=[] )
+      @filter = filter
+    end
+  
     # get the name of a holiday and the regions, where it is observed
     def show_holiday(date)
       ans = Holidays.on(date, :any, :observed)
@@ -228,7 +229,7 @@ module HolidayTools
 
     # show the expanded name of a region
     def show_reg(reg)
-      rn = @reg_names[reg]
+      rn = @@reg_names[reg]
       if rn
         "\t \t %s" % [ rn ]
       else
