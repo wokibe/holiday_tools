@@ -117,7 +117,7 @@ module HolidayTools
       gb_nir: 'Great Britain/Norther Ireland',
       gb_sct: 'Great Britain/Scotland',
       gb_wls: 'Great Britain/Wales',
-      # gg:     'Guernsey',
+      gg:     'Guernsey',
       ie:     'ireland',
       im:     'Isle of Man',
       it:     'Italy',
