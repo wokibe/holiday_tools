@@ -91,11 +91,12 @@ rescue OptionParser::InvalidOption
   exit
 end
 
-holidays = HolidayTools::Locator.new(@opts.filter)
 if @opts.list
-  puts holidays.show_regions
+  puts HolidayTools::Locator.show_regions
   exit
 end
+
+holidays = HolidayTools::Locator.new(@opts.filter)
 if @opts.version
   puts HolidayTools::VERSION
   exit
