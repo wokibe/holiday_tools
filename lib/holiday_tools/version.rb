@@ -1,3 +1,3 @@
 module HolidayTools
-  VERSION = "0.0.1ß"
+  VERSION = "0.0.10"
 end
