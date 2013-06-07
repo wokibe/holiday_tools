@@ -23,7 +23,7 @@ describe HolidayTools do
   it 'should list all available regions' do
     regions = HolidayTools::Locator.show_regions
     p regions
-    regions.size.should == 101
+    regions.size.should == 100
     
   end
 end

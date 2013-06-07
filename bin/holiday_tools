@@ -92,6 +92,7 @@ rescue OptionParser::InvalidOption
 end
 
 if @opts.list
+  puts "Region \tName"
   puts HolidayTools::Locator.show_regions
   exit
 end

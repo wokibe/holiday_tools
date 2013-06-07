@@ -156,7 +156,6 @@ module HolidayTools
     def self.show_regions
       regs = Holidays.regions.sort
       txt = []
-      txt << "Region \tName"
       regs.each do |key|
         name = @@reg_names[key]
         if name
